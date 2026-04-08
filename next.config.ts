@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Permite paths com caracteres especiais nos arquivos estáticos
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;

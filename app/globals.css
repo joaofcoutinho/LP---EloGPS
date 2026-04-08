@@ -1,26 +1,195 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Elo Education — Minimal Luxury Design System ─── */
+@theme {
+  /* Blues */
+  --color-denim-dive:    #000A1C;
+  --color-elo-blue:      #00192B;
+  --color-azurite:       #0F243C;
+  --color-winter-metal:  #475B6D;
+  --color-stone-gray:    #7A8790;
+
+  /* Warms */
+  --color-rust-orange:   #994F24;
+  --color-creme-brulee:  #927350;
+  --color-au-lait:       #C3AF94;
+  --color-rustic-cotton: #D8C9B4;
+  --color-light-cream:   #E6DBCE;
+  --color-warm-gray:     #85786A;
+
+  /* Neutrals */
+  --color-elo-black:     #0A0A0A;
+  --color-true-black:    #000000;
+
+  /* Font families */
+  --font-display: var(--font-lato);
+  --font-sans:    var(--font-inter);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ─── Base reset ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #00192B;
+  color: #E6DBCE;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography helpers ─── */
+.font-display {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* ─── Luxury texture overlay ─── */
+.texture-overlay {
+  position: relative;
+}
+.texture-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('/textures/leather.png');
+  background-size: cover;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Gold/Rust gradient ─── */
+.gradient-rust {
+  background: linear-gradient(135deg, #994F24 0%, #C3AF94 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Divider ─── */
+.divider-luxury {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #994F24, #C3AF94);
+}
+
+/* ─── Diagnóstico grid ─── */
+.diag-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 64px;
+}
+.diag-grid .diag-card {
+  grid-column: span 2;
+}
+.diag-grid .diag-card:last-child {
+  grid-column: 2 / 4;
+}
+
+/* ─── Nav links ─── */
+.nav-link {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-family: var(--font-inter);
+  transition: color 0.2s;
+}
+.nav-link:hover {
+  color: #ffffff;
+}
+
+/* ─── Diagnóstico cards ─── */
+.diag-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.diag-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(153, 79, 36, 0.25);
+}
+.diag-card:hover .diag-icon {
+  background-color: rgba(153, 79, 36, 0.2);
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVO — overrides apenas em breakpoints
+════════════════════════════════════════ */
+
+/* ── Tablet (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .hero-nav   { padding: 16px 32px !important; }
+  .hero-left  { padding: 0 24px 48px 32px !important; }
+  .hero-right { padding: 0 32px 48px 24px !important; }
+  .section-pad { padding: 72px 32px !important; }
+  .pilares-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+
+/* ── Mobile (≤ 768px) ── */
+@media (max-width: 768px) {
+  .hero-nav {
+    padding: 16px 20px !important;
+    justify-content: center !important;
+  }
+  .hero-nav-cta  { display: none !important; }
+  .nav-links     { display: none !important; }
+
+  /* Logos centralizadas e maiores */
+  .nav-logos {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .nav-logos img:first-child {
+    width: 64px !important;
+    height: 64px !important;
+  }
+  .nav-logos img:last-child {
+    width: 150px !important;
+    height: 42px !important;
+  }
+
+  .hero-content-mobile {
+    align-items: center !important;
+    text-align: center !important;
+    padding: 0 24px !important;
+  }
+  .hero-date-bar    { justify-content: center !important; }
+  .hero-speakers    { justify-content: center !important; }
+
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-left {
+    padding: 0 20px 36px 20px !important;
+    order: 2;
+  }
+  .hero-right {
+    padding: 48px 20px 0 20px !important;
+    order: 1;
+  }
+
+  .section-pad { padding: 56px 20px !important; }
+
+  .diag-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .diag-grid .diag-card       { grid-column: span 1 !important; }
+  .diag-grid .diag-card:last-child { grid-column: span 1 !important; }
+
+  .pilares-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* ── Small mobile (≤ 480px) ── */
+@media (max-width: 480px) {
+  .pilares-grid { grid-template-columns: 1fr !important; }
 }
