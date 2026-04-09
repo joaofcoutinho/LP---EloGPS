@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useActionState } from 'react';
+import { saveLead } from '../actions/saveLead';
 
 interface LeadFormProps {
   variant?: 'dark' | 'light';
@@ -8,20 +9,7 @@ interface LeadFormProps {
 }
 
 export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFormProps) {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
-  const [form, setForm] = useState({ nome: '', email: '', whatsapp: '', cargo: '' });
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setStatus('loading');
-    // Placeholder: conectar ao backend/webhook de captação
-    await new Promise(r => setTimeout(r, 1200));
-    setStatus('success');
-  }
+  const [state, action, isPending] = useActionState(saveLead, null);
 
   const inputBase: React.CSSProperties = {
     width: '100%',
@@ -36,7 +24,7 @@ export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFo
     transition: 'border-color 0.2s',
   };
 
-  if (status === 'success') {
+  if (state?.ok) {
     return (
       <div
         className="text-center py-10 px-8 rounded"
@@ -53,7 +41,7 @@ export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFo
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form action={action} className="flex flex-col gap-4">
       {showPrice && (
         <div className="text-center mb-2">
           <span
@@ -79,8 +67,6 @@ export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFo
         name="nome"
         placeholder="Nome completo"
         required
-        value={form.nome}
-        onChange={handleChange}
         style={inputBase}
       />
       <input
@@ -88,8 +74,6 @@ export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFo
         name="email"
         placeholder="E-mail profissional"
         required
-        value={form.email}
-        onChange={handleChange}
         style={inputBase}
       />
       <input
@@ -97,15 +81,12 @@ export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFo
         name="whatsapp"
         placeholder="WhatsApp (com DDD)"
         required
-        value={form.whatsapp}
-        onChange={handleChange}
         style={inputBase}
       />
       <select
         name="cargo"
-        value={form.cargo}
-        onChange={handleChange}
-        style={{ ...inputBase, cursor: 'pointer', color: form.cargo ? '#E6DBCE' : '#7A8790' }}
+        defaultValue=""
+        style={{ ...inputBase, cursor: 'pointer', color: '#7A8790' }}
       >
         <option value="" disabled>Seu cargo / posição</option>
         <option value="gestor_clinica">Gestor(a) de Clínica</option>
@@ -115,9 +96,15 @@ export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFo
         <option value="outro">Outro</option>
       </select>
 
+      {state?.error && (
+        <p style={{ color: '#C3AF94', fontSize: '13px', textAlign: 'center' }}>
+          {state.error}
+        </p>
+      )}
+
       <button
         type="submit"
-        disabled={status === 'loading'}
+        disabled={isPending}
         style={{
           padding: '16px 24px',
           backgroundColor: '#994F24',
@@ -128,19 +115,19 @@ export default function LeadForm({ variant = 'dark', showPrice = false }: LeadFo
           textTransform: 'uppercase',
           border: 'none',
           borderRadius: '4px',
-          cursor: status === 'loading' ? 'not-allowed' : 'pointer',
-          opacity: status === 'loading' ? 0.7 : 1,
+          cursor: isPending ? 'not-allowed' : 'pointer',
+          opacity: isPending ? 0.7 : 1,
           transition: 'all 0.2s',
           fontFamily: 'var(--font-inter)',
         }}
         onMouseEnter={e => {
-          if (status !== 'loading') (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#7a3d1a';
+          if (!isPending) (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#7a3d1a';
         }}
         onMouseLeave={e => {
           (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#994F24';
         }}
       >
-        {status === 'loading' ? 'Reservando...' : 'Garantir minha vaga'}
+        {isPending ? 'Reservando...' : 'Garantir minha vaga'}
       </button>
 
       <p className="text-center text-xs" style={{ color: '#475B6D' }}>
