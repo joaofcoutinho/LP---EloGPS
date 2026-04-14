@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Countdown from './components/Countdown';
-import LeadForm from './components/LeadForm';
+import InscricaoSection from './components/InscricaoSection';
 
 /* ─── Design tokens ─── */
 const C = {
@@ -137,7 +137,7 @@ export default function Home() {
         <nav className="hero-nav" style={{
           position: 'relative', zIndex: 2,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '16px 56px',
+          padding: '8px 56px',
         }}>
           {/* Logos */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
@@ -492,32 +492,41 @@ export default function Home() {
               fontSize: 'clamp(2rem, 4.5vw, 3rem)',
               fontWeight: 700, color: C.lightCream, marginBottom: '24px',
             }}>
-              Em 4 horas, você vai reorganizar
+              São 4 horas para você reorganizar
               os pilares da sua operação.
             </h2>
             <Divider centered />
           </div>
 
+          {/* Cronograma do evento */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '20px', marginBottom: '52px',
           }}>
             {[
-              { num: '1', title: 'Performance Humana',    desc: 'Seu time não sustenta o que não tem energia para executar' },
-              { num: '2', title: 'Liderança sob Pressão', desc: 'Parar de reagir e começar a estruturar comportamento' },
-              { num: '3', title: 'Comunicação e Cultura', desc: 'Onde a maioria dos problemas nasce e se repete' },
-              { num: '4', title: 'Estrutura e Execução',  desc: 'Sem isso, tudo volta ao mesmo lugar' },
-            ].map(({ num, title, desc }) => (
-              <div key={num} style={{
+              { hora: '14h00', title: 'Performance Humana',    desc: 'Seu time não sustenta o que não tem energia para executar' },
+              { hora: '15h00', title: 'Liderança sob Pressão', desc: 'Parar de reagir e começar a estruturar comportamento' },
+              { hora: '16h00', title: 'Comunicação e Cultura', desc: 'Onde a maioria dos problemas nasce e se repete' },
+              { hora: '17h00', title: 'Estrutura e Execução',  desc: 'Sem isso, tudo volta ao mesmo lugar' },
+            ].map(({ hora, title, desc }) => (
+              <div key={hora} style={{
                 padding: '36px 28px',
                 backgroundColor: 'rgba(0,10,28,0.5)',
                 border: `1px solid rgba(71,91,109,0.35)`,
                 borderRadius: '3px',
                 borderTop: `3px solid ${C.rustOrange}`,
               }}>
-                <div style={{ fontSize: '3.5rem', fontWeight: 700, fontFamily: 'var(--font-lato)', color: C.rustOrange, lineHeight: 1, marginBottom: '20px', opacity: 0.55 }}>
-                  {num}
+                <div style={{
+                  display: 'inline-block',
+                  fontSize: '11px', fontWeight: 700, letterSpacing: '0.18em',
+                  color: C.rustOrange, fontFamily: 'var(--font-inter)',
+                  textTransform: 'uppercase', marginBottom: '20px',
+                  padding: '4px 10px',
+                  border: `1px solid rgba(153,79,36,0.35)`,
+                  borderRadius: '100px',
+                }}>
+                  {hora}
                 </div>
                 <div style={{ fontSize: '16px', fontWeight: 600, color: C.lightCream, fontFamily: 'var(--font-inter)', marginBottom: '12px', lineHeight: 1.3 }}>
                   {title}
@@ -529,17 +538,43 @@ export default function Home() {
             ))}
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', marginBottom: '52px' }}>
-            {['4 horas intensivas', 'Conteúdo + diagnóstico + aplicação', 'Ferramentas práticas', 'Direcionamento claro para execução'].map(tag => (
-              <span key={tag} style={{
-                padding: '9px 20px',
-                border: `1px solid ${C.cremeBrulee}`,
-                borderRadius: '100px',
-                fontSize: '13px', color: C.auLait, fontFamily: 'var(--font-inter)',
-              }}>
-                → {tag}
-              </span>
-            ))}
+          {/* O que você leva */}
+          <div style={{
+            marginBottom: '52px',
+            padding: '40px 44px',
+            border: `1px solid rgba(71,91,109,0.35)`,
+            borderRadius: '4px',
+            background: 'linear-gradient(135deg, rgba(15,36,60,0.6) 0%, rgba(0,10,28,0.85) 100%)',
+          }}>
+            <p style={{
+              fontSize: '10px', letterSpacing: '0.28em', textTransform: 'uppercase',
+              color: C.rustOrange, fontFamily: 'var(--font-inter)', marginBottom: '28px',
+            }}>
+              O que você leva
+            </p>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '12px',
+            }}>
+              {[
+                'Diagnóstico completo do seu time',
+                'Checklist de liderança aplicado',
+                'Recursos práticos de comunicação',
+                'Acesso ao ecossistema Elo e-Health',
+              ].map((item) => (
+                <div key={item} style={{
+                  display: 'flex', alignItems: 'center', gap: '16px',
+                  padding: '18px 22px',
+                  borderLeft: `3px solid ${C.rustOrange}`,
+                  background: 'linear-gradient(90deg, rgba(153,79,36,0.07) 0%, rgba(15,36,60,0.4) 100%)',
+                  borderRadius: '0 3px 3px 0',
+                }}>
+                  <span style={{ fontSize: '10px', color: C.rustOrange, flexShrink: 0 }}>◈</span>
+                  <span style={{ fontSize: '15px', color: C.rusticCotton, fontFamily: 'var(--font-inter)' }}>{item}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div style={{ textAlign: 'center' }}>
@@ -617,133 +652,9 @@ export default function Home() {
       <SectionSep />
 
       {/* ══════════════════════════════════════
-          6. O QUE VOCÊ LEVA + FORMULÁRIO
-          bg: denimDive
+          6. INSCRIÇÃO
       ══════════════════════════════════════ */}
-      <section id="inscricao" className="section-pad" style={{
-        backgroundColor: C.denimDive,
-        padding: '96px 48px',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        {/* Glow de fundo */}
-        <div style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          background: `radial-gradient(ellipse 60% 50% at 75% 50%, rgba(153,79,36,0.08) 0%, transparent 70%)`,
-        }} />
-
-        <div style={{ maxWidth: '1060px', margin: '0 auto', position: 'relative' }}>
-
-          {/* Cabeçalho da seção */}
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <EyebrowLabel>Garanta sua vaga</EyebrowLabel>
-            <h2 style={{
-              fontFamily: 'var(--font-lato)',
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 700, color: C.lightCream,
-              marginBottom: '16px', lineHeight: 1.15,
-            }}>
-              Uma imersão que transforma<br />a forma como você lidera
-            </h2>
-            <Divider centered />
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '48px', alignItems: 'start',
-          }}>
-
-            {/* Left: benefícios + detalhes */}
-            <div>
-              <p style={{ fontSize: '10px', letterSpacing: '0.25em', textTransform: 'uppercase', color: C.rustOrange, fontFamily: 'var(--font-inter)', marginBottom: '20px' }}>
-                O que você leva
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '36px' }}>
-                {[
-                  { icon: '◈', text: 'Diagnóstico completo do seu time' },
-                  { icon: '◈', text: 'Checklist de liderança aplicado' },
-                  { icon: '◈', text: 'Recursos práticos de comunicação' },
-                  { icon: '◈', text: 'Acesso ao ecossistema Elo e-Health' },
-                ].map(({ icon, text }) => (
-                  <div key={text} style={{
-                    display: 'flex', alignItems: 'center', gap: '16px',
-                    padding: '18px 22px',
-                    borderLeft: `3px solid ${C.rustOrange}`,
-                    background: 'linear-gradient(90deg, rgba(153,79,36,0.07) 0%, rgba(15,36,60,0.4) 100%)',
-                    borderRadius: '0 3px 3px 0',
-                  }}>
-                    <span style={{ fontSize: '10px', color: C.rustOrange, flexShrink: 0 }}>{icon}</span>
-                    <span style={{ fontSize: '15px', color: C.rusticCotton, fontFamily: 'var(--font-inter)' }}>{text}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Info card */}
-              <div style={{
-                padding: '28px 32px',
-                border: `1px solid rgba(146,115,80,0.3)`,
-                borderRadius: '4px',
-                background: 'linear-gradient(135deg, rgba(15,36,60,0.6) 0%, rgba(0,10,28,0.8) 100%)',
-              }}>
-                <p style={{ fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', color: C.stoneGray, fontFamily: 'var(--font-inter)', marginBottom: '20px' }}>
-                  Detalhes do evento
-                </p>
-                {[
-                  { label: 'Data',         value: '24 de Abril de 2026' },
-                  { label: 'Formato',      value: 'Teórica e prática · 4 horas' },
-                  { label: 'Vagas',        value: 'Limitadas' },
-                  { label: 'Investimento', value: 'R$ 1.490' },
-                ].map(({ label, value }, i, arr) => (
-                  <div key={label} style={{
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px',
-                    padding: '12px 0',
-                    borderBottom: i < arr.length - 1 ? `1px solid rgba(71,91,109,0.25)` : 'none',
-                  }}>
-                    <span style={{ fontSize: '13px', color: C.stoneGray, fontFamily: 'var(--font-inter)' }}>{label}</span>
-                    <span style={{
-                      fontSize: label === 'Investimento' ? '18px' : '14px',
-                      fontFamily: label === 'Investimento' ? 'var(--font-lato)' : 'var(--font-inter)',
-                      color: label === 'Investimento' ? C.rustOrange : C.lightCream,
-                      fontWeight: label === 'Investimento' ? 700 : 400,
-                    }}>
-                      {value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right: form */}
-            <div style={{
-              padding: '44px 40px',
-              border: `1px solid rgba(153,79,36,0.25)`,
-              borderRadius: '4px',
-              background: 'linear-gradient(160deg, rgba(15,36,60,0.75) 0%, rgba(0,10,28,0.9) 100%)',
-              boxShadow: '0 24px 64px rgba(0,0,0,0.4)',
-            }}>
-              <div style={{ marginBottom: '8px' }}>
-                <span style={{ fontSize: '10px', letterSpacing: '0.25em', textTransform: 'uppercase', color: C.rustOrange, fontFamily: 'var(--font-inter)' }}>
-                  Inscrição
-                </span>
-              </div>
-              <h3 style={{
-                fontFamily: 'var(--font-lato)',
-                fontSize: '2rem', fontWeight: 700,
-                color: C.lightCream, marginBottom: '4px', lineHeight: 1.15,
-              }}>
-                Reserve sua vaga
-              </h3>
-              <p style={{ fontSize: '13px', color: C.stoneGray, fontFamily: 'var(--font-inter)', marginBottom: '32px' }}>
-                Vagas limitadas · 24 de Abril de 2026
-              </p>
-              <LeadForm showPrice />
-            </div>
-
-          </div>
-        </div>
-      </section>
+      <InscricaoSection />
 
       {/* ══════════════════════════════════════
           FOOTER

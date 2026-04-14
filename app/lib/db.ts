@@ -10,7 +10,12 @@ export async function ensureLeadsTable() {
       email     TEXT NOT NULL,
       whatsapp  TEXT NOT NULL,
       cargo     TEXT,
+      cupom     TEXT,
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
+  `;
+  // Adiciona coluna cupom em tabelas já existentes
+  await sql`
+    ALTER TABLE leads ADD COLUMN IF NOT EXISTS cupom TEXT
   `;
 }

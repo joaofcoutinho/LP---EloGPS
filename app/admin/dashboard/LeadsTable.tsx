@@ -22,6 +22,7 @@ export interface Lead {
   email: string;
   whatsapp: string;
   cargo: string | null;
+  cupom: string | null;
   created_at: string;
 }
 
@@ -49,7 +50,7 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
-            {['#', 'Nome', 'E-mail', 'WhatsApp', 'Cargo', 'Data / Hora'].map(col => (
+            {['#', 'Nome', 'E-mail', 'WhatsApp', 'Cargo', 'Cupom', 'Data / Hora'].map(col => (
               <th
                 key={col}
                 style={{
@@ -81,6 +82,16 @@ export default function LeadsTable({ leads }: { leads: Lead[] }) {
 
 function LeadRow({ lead, idx, total }: { lead: Lead; idx: number; total: number }) {
   const baseBg = idx % 2 === 0 ? 'transparent' : 'rgba(0,0,0,0.1)';
+
+  // Extrai percentual do cupom (ex: KLEBER90 → 90)
+  const cupomPct = lead.cupom ? parseInt(lead.cupom.replace(/[^0-9]/g, ''), 10) : null;
+  const cupomColor = cupomPct === 100
+    ? '#4CAF50'
+    : cupomPct === 90
+      ? C.rustOrange
+      : cupomPct === 80
+        ? C.auLait
+        : C.stoneGray;
 
   return (
     <tr
@@ -118,6 +129,21 @@ function LeadRow({ lead, idx, total }: { lead: Lead; idx: number; total: number 
             border: '1px solid rgba(153,79,36,0.3)',
           }}>
             {cargoLabel[lead.cargo] ?? lead.cargo}
+          </span>
+        ) : (
+          <span style={{ color: C.stoneGray, fontSize: '12px' }}>—</span>
+        )}
+      </td>
+      <td style={{ padding: '14px 20px' }}>
+        {lead.cupom ? (
+          <span style={{
+            display: 'inline-block', padding: '3px 10px', borderRadius: '20px',
+            fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em',
+            backgroundColor: `${cupomColor}18`,
+            color: cupomColor,
+            border: `1px solid ${cupomColor}55`,
+          }}>
+            {lead.cupom}
           </span>
         ) : (
           <span style={{ color: C.stoneGray, fontSize: '12px' }}>—</span>

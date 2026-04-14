@@ -27,7 +27,7 @@ export default async function DashboardPage() {
   /* ── Fetch leads ── */
   await ensureLeadsTable();
   const leads = (await sql`
-    SELECT id, nome, email, whatsapp, cargo, created_at
+    SELECT id, nome, email, whatsapp, cargo, cupom, created_at
     FROM leads
     ORDER BY created_at DESC
   `) as Lead[];
@@ -59,6 +59,7 @@ export default async function DashboardPage() {
   };
 
   const topCargo = Object.entries(cargoCount).sort((a, b) => b[1] - a[1])[0];
+  const comCupom = leads.filter(l => l.cupom).length;
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: C.eloBlue, fontFamily: 'var(--font-inter)' }}>
@@ -105,9 +106,10 @@ export default async function DashboardPage() {
         </div>
 
         {/* ── Stats cards ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '40px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginBottom: '40px' }}>
           <StatCard label="Total de leads" value={total} accent={C.rustOrange} />
           <StatCard label="Captados hoje" value={hoje} accent={C.auLait} />
+          <StatCard label="Com cupom" value={comCupom} sub={total > 0 ? `${Math.round(comCupom / total * 100)}% do total` : ''} accent={C.rustOrange} />
           <StatCard
             label="Cargo predominante"
             value={topCargo ? (cargoLabel[topCargo[0]] ?? topCargo[0]) : '—'}

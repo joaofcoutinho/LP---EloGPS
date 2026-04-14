@@ -6,6 +6,7 @@ interface Lead {
   email: string;
   whatsapp: string;
   cargo: string | null;
+  cupom: string | null;
   created_at: string;
 }
 
@@ -19,13 +20,14 @@ const cargoLabel: Record<string, string> = {
 
 export default function ExportButton({ leads }: { leads: Lead[] }) {
   function handleExport() {
-    const header = ['ID', 'Nome', 'E-mail', 'WhatsApp', 'Cargo', 'Data/Hora'];
+    const header = ['ID', 'Nome', 'E-mail', 'WhatsApp', 'Cargo', 'Cupom', 'Data/Hora'];
     const rows = leads.map(l => [
       l.id,
       `"${l.nome}"`,
       l.email,
       l.whatsapp,
       l.cargo ? (cargoLabel[l.cargo] ?? l.cargo) : '',
+      l.cupom ?? '',
       new Date(l.created_at).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
     ]);
 
