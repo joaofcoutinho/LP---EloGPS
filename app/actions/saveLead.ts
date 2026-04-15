@@ -1,6 +1,9 @@
 'use server';
 
 import { sql, ensureLeadsTable } from '../lib/db';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function saveLead(
   _prev: { ok?: boolean; error?: string } | null,
@@ -35,6 +38,20 @@ export async function saveLead(
       INSERT INTO leads (nome, email, whatsapp, cargo, cupom)
       VALUES (${nome}, ${email}, ${whatsapp}, ${cargo}, ${cupom})
     `;
+
+    resend.emails.send({
+      from: 'GPS People <noreply@eloe-health.com.br>',
+      to: 'coord.comercial@eloe-health.com.br',
+      subject: `Novo lead: ${nome}`,
+      html: `
+        <p><strong>Nome:</strong> ${nome}</p>
+        <p><strong>E-mail:</strong> ${email}</p>
+        <p><strong>WhatsApp:</strong> ${whatsapp}</p>
+        <p><strong>Cargo:</strong> ${cargo ?? '—'}</p>
+        <p><strong>Cupom:</strong> ${cupom ?? '—'}</p>
+      `,
+    }).catch(err => console.error('[resend]', err));
+
     return { ok: true };
   } catch (err) {
     console.error('[saveLead]', err);

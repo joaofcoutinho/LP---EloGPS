@@ -13,11 +13,14 @@ const C = {
 
 const BASE_PRICE = 1490;
 
-const VALID_COUPONS: Record<string, number> = Object.fromEntries(
-  ['KLEBER', 'LUCIANA', 'CAMILA', 'RAPHAEL'].flatMap(name =>
-    [100, 90, 80, 70].map(pct => [`${name}${pct}`, pct])
-  )
-);
+const VALID_COUPONS: Record<string, number> = {
+  ELO100: 100,
+  ...Object.fromEntries(
+    ['KLEBER', 'LUCIANA', 'CAMILA', 'RAPHAEL'].flatMap(name =>
+      [100, 90, 80, 70].map(pct => [`${name}${pct}`, pct])
+    )
+  ),
+};
 
 function formatPrice(v: number) {
   return v.toLocaleString('pt-BR', { minimumFractionDigits: 0 });
