@@ -3,11 +3,14 @@
 import { useActionState } from 'react';
 import { saveLead } from '../actions/saveLead';
 
-const VALID_COUPONS: Record<string, number> = Object.fromEntries(
-  ['KLEBER', 'LUCIANA', 'CAMILA', 'RAPHAEL'].flatMap(name =>
-    [100, 90, 80, 70].map(pct => [`${name}${pct}`, pct])
-  )
-);
+const VALID_COUPONS: Record<string, number> = {
+  ELO100: 100,
+  ...Object.fromEntries(
+    ['KLEBER', 'LUCIANA', 'CAMILA', 'RAPHAEL'].flatMap(name =>
+      [100, 90, 80, 70].map(pct => [`${name}${pct}`, pct])
+    )
+  ),
+};
 
 interface LeadFormProps {
   cupom: string;

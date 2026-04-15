@@ -18,6 +18,7 @@ export async function saveLead(
 
   // Valida cupom se preenchido
   const VALID_COUPONS = new Set([
+    'ELO100',
     'KLEBER100','KLEBER90','KLEBER80','KLEBER70',
     'LUCIANA100','LUCIANA90','LUCIANA80','LUCIANA70',
     'CAMILA100','CAMILA90','CAMILA80','CAMILA70',
